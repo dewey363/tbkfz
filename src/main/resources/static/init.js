@@ -1,0 +1,9 @@
+document.write("<script language='javascript' src='static/js/jquery.min.js'></script>");
+document.write("<script language='javascript' src='static/js/jquery.magnific-popup.js'></script>");
+document.write("<script language='javascript' src='static/js/bootstrap.min.js'></script>");
+document.write("<script language='javascript' src='static/js/imagezoom.js'></script>");
+document.write("<script language='javascript' src='static/js/jquery.flexslider.js'></script>");
+document.write("<script language='javascript' src='static/js/memenu.js'></script>");
+document.write("<script language='javascript' src='static/js/responsiveslides.min.js'></script>");
+document.write("<script language='javascript' src='static/js/simpleCart.min.js'></script>");
+document.write("<script language='javascript' src='static/js/wow.min.js'></script>");
