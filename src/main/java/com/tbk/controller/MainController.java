@@ -1,13 +1,26 @@
 package com.tbk.controller;
 
+import com.tbk.entity.Product;
+import com.tbk.entity.Shop;
+import com.tbk.service.ProductService;
+import com.tbk.service.ShopService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 /**
  * Created by TU on 2018/8/1.
  */
 @Controller
 public class MainController{
+
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private ShopService shopService;
 
     @RequestMapping(value = "/account")
     public String account() {
@@ -25,7 +38,11 @@ public class MainController{
     }
 
     @RequestMapping(value = "/index")
-    public String main() {
+    public String index(Model model) {
+        List<Shop> shops = shopService.findTopN(3).getContent();
+        List<Product> products = productService.findAll();
+        model.addAttribute("shops",shops);
+        model.addAttribute("products",products);
         return "index";
     }
 
@@ -34,9 +51,9 @@ public class MainController{
         return "men";
     }
 
-    @RequestMapping(value = "/products")
-    public String products() {
-        return "products";
+    @RequestMapping(value = "/shop")
+    public String shop() {
+        return "shop";
     }
 
     @RequestMapping(value = "/register")
