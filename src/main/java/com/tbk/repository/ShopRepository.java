@@ -17,5 +17,5 @@ import java.util.List;
 public interface ShopRepository extends BaseRepository<Shop,String> {
 
     @Query(value = "select t from Shop t where t.deleted = 0 order by t.priority")
-    Page<Shop> findTopN(Pageable pageable);
+    Page<Shop> findPage(Pageable pageable);
 }

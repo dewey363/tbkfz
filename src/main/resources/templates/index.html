@@ -105,26 +105,30 @@ $(function () {
 <div class="content">
 	<div class="container">
 		<div class="content-top">
-			<div class="content-top1" >
-				<div th:each="product,status:${products}" class="col-md-3 col-md2 animated wow fadeInUp" data-wow-delay=".5s" style="padding-bottom:30px">
+			<div class="content-top1" id="productlist">
+				<div th:each="product,status:${products}" class="col-md-3 col-md2 animated wow fadeInLeft" data-wow-delay=".5s" style="padding-bottom:30px">
 					<div class="col-md1 simpleCart_shelfItem">
 						<a target="_blank" th:href="${product.buyUrl}">
 							<img style="width:223px;height: 223px" class="img-responsive" th:src="${product.mainPic}" th:alt="${product.name}" />
 						</a>
-						<h3><a th:text="${#strings.length(product.name)>24}?${#strings.substring(product.name,0,20)}+'...':(${#strings.length(product.name)>12}?${product.name}:${product.name}+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')" href="${product.buyUrl}">Palazzo</a></h3>
+						<h3><a th:text="${#strings.length(product.name)>24}?${#strings.substring(product.name,0,20)}+'...':(${#strings.length(product.name)>12}?${product.name}:${product.name}+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')" href="${product.buyUrl}"></a></h3>
 						<div class="price">
 							<h5 class="item_price" th:text="${#strings.isEmpty(product.couponUrl)}?('￥'+${product.price}):('￥'+${product.price}+'【'+${product.couponDenomination}+'】')"></h5>
 							<a target="_blank" th:href="${#strings.isEmpty(product.couponUrl)}?${product.buyUrl}:${product.couponUrl}" th:text="${#strings.isEmpty(product.couponUrl)}?'去购买':'领券再买'" class="item_add"></a>
 							<div class="clearfix"> </div>
 						</div>
 					</div>
-
+				</div>
+			</div>
+			<div class="content-top1" th:if="${#lists.size(products) == 20}">
+				<div class="col-md-2 col-md-offset-5" id="loadmoreDiv">
+					<a href="javascript:loadmore()"> 点击加载更多 </a>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<!--footer-->
+<!--footer begin-->
 <div class="footer">
 	<div class="footer-bottom">
 		<div class="container">
@@ -158,6 +162,62 @@ $(function () {
 	</div>
 </div>
 </div>
-<!--footer-->
+<!--footer end-->
+
+<script>
+	var pageNum = 2;
+	var pageSize = 20;
+    function loadmore(){
+        $.ajax({
+            url:"reloadproduct",    //请求的url地址
+            dataType:"json",
+            async:false,
+            data:{
+               pageNum :pageNum,
+        		pageSize :pageSize
+            },
+            type:"GET",
+            success:function(result){
+               pageNum = pageNum + 1;
+               var data = result.data;
+               if(data.length < 20){
+                   $("#loadmoreDiv").empty();
+                   $("#loadmoreDiv").append("<a href='javascript:void(0)'>没有更多了</a>");
+			   }
+			   for(var i=0;i<data.length;i++){
+                   $("#productlist").append(productToHtml(data[i]));
+			   }
+            }
+        });
+	}
+
+	function productToHtml(product){
+		var html = "<div class='col-md-3 col-md2 animated wow fadeInLeft' data-wow-delay='.5s' style='padding-bottom:30px;'>"+
+            "<div class='col-md1 simpleCart_shelfItem'>"+
+            "<a target='_blank' href='"+product.buyUrl+"'>"+
+            "<img style='width:223px;height: 223px' class='img-responsive' src='"+product.mainPic+"' alt='"+product.name+"'/></a>"+
+            "<h3><a href=' "+product.buyUrl+"'>";
+			if(product.name.length>24){
+			    html = html + product.name.substring(0,20)+"..."
+			}else if(product.name.length>12){
+                html = html + product.name;
+			}else{
+                html = html + product.name+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+			}
+			html = html + "</a></h3><div class='price'><h5 class='item_price'>￥"+product.price;
+			if(product.couponUrl.length > 0){
+			  html = html +   "【"+product.couponDenomination+"】";
+			}
+			html = html + "</h5><a target='_blank' class='item_add'";
+			if(product.couponUrl.length>0){
+			    html = html + "href='"+ product.couponUrl +"'>领券再买"
+			}else{
+                html = html + "href='"+ product.buyUrl +"'>去购买"
+			}
+			html = html + "</a><div class='clearfix'> </div> </div> </div> </div>"
+		console.log(html);
+        return html;
+	}
+</script>
 </body>
 </html>

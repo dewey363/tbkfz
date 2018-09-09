@@ -4,11 +4,16 @@ import com.tbk.entity.Product;
 import com.tbk.entity.Shop;
 import com.tbk.service.ProductService;
 import com.tbk.service.ShopService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.thymeleaf.expression.Strings;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -38,9 +43,12 @@ public class MainController{
     }
 
     @RequestMapping(value = "/index")
-    public String index(Model model) {
-        List<Shop> shops = shopService.findTopN(3).getContent();
-        List<Product> products = productService.findAll();
+    public String index(HttpServletRequest request ,Model model) {
+        String pageNum = StringUtils.isEmpty(request.getParameter("pageNum"))?"1":request.getParameter("pageNum");
+       /* String pageSize = StringUtils.isEmpty(request.getParameter("pageNum"))?"20":request.getParameter("pageSize");*/
+        Pageable pageable = new PageRequest(Integer.valueOf(pageNum)-1,20);
+        List<Shop> shops = shopService.findTopN(3).getContent();//查询前3的商店
+        List<Product> products = productService.findPage(pageable).getContent();//首次展示20种商品
         model.addAttribute("shops",shops);
         model.addAttribute("products",products);
         return "index";

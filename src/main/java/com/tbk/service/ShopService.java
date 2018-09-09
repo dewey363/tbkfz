@@ -28,6 +28,10 @@ public class ShopService extends BaseService<Shop,String> {
 
     public Page<Shop> findTopN(int i) {
         Pageable pageable=new PageRequest(0,i);
-        return getShopRepository().findTopN(pageable);
+        return this.findPage(pageable);
+    }
+
+    public Page<Shop> findPage(Pageable pageable) {
+        return getShopRepository().findPage(pageable);
     }
 }
