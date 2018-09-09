@@ -595,7 +595,7 @@ ul.callbacks_tabs.callbacks1_tabs {
 .footer-bottom-cate h6 {
     font-size: 1.6em;
     color: #fa03bb;
-    margin: 0 0 1em;
+    margin: 0 0 10px;
 	font-family: 'Poiret One', cursive;
 	font-weight:700;
 }
@@ -638,7 +638,7 @@ p.footer-class a:hover{
   color:  #B2B2B2;
 }
 .footer-bottom {
-    padding: 4em 0;
+    padding: 20px 0px 5px 0px;
     background:#252323;
 }
 /*--//footer--*/

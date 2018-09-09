@@ -42,11 +42,11 @@ $(function () {
 </head>
 <body>
 <!--header-->
-<div class="header">
+<div class="header" id="header">
 	<div class="header-top">
 		<div class="container">
-			<div class="col-sm-4 logo animated wow fadeInLeft" data-wow-delay=".5s">
-				<h1><a href="index">年轻 <span>范儿</span></a></h1>
+			<div class="col-sm-4 logo">
+				<h1><a href="#">年轻 <span>范儿</span></a></h1>
 			</div>
 		</div>
 	</div>
@@ -104,7 +104,7 @@ $(function () {
 <!--content-->
 <div class="content">
 	<div class="container">
-		<div class="content-top">
+		<div class="content-top" style="padding:0px">
 			<div class="content-top1" id="productlist">
 				<div th:each="product,status:${products}" class="col-md-3 col-md2 animated wow fadeInLeft" data-wow-delay=".5s" style="padding-bottom:30px">
 					<div class="col-md1 simpleCart_shelfItem">
@@ -121,8 +121,9 @@ $(function () {
 				</div>
 			</div>
 			<div class="content-top1" th:if="${#lists.size(products) == 20}">
-				<div class="col-md-2 col-md-offset-5" id="loadmoreDiv">
+				<div class="col-md-offset-5" id="loadmoreDiv" style="padding-bottom:30px">
 					<a href="javascript:loadmore()"> 点击加载更多 </a>
+					<a href="#header"> 返回顶部 </a>
 				</div>
 			</div>
 		</div>
@@ -182,7 +183,7 @@ $(function () {
                var data = result.data;
                if(data.length < 20){
                    $("#loadmoreDiv").empty();
-                   $("#loadmoreDiv").append("<a href='javascript:void(0)'>没有更多了</a>");
+                   $("#loadmoreDiv").append("<a href='javascript:void(0)'>没有更多了</a><a href='#header'> 返回顶部 </a>");
 			   }
 			   for(var i=0;i<data.length;i++){
                    $("#productlist").append(productToHtml(data[i]));
